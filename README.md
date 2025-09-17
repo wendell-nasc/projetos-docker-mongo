@@ -2,10 +2,30 @@
 mkdir -p mongo
 openssl rand -base64 756 > mongo/mongo-keyfile
 chmod 400 mongo/mongo-keyfile
+docker-compose --env-file .env up 
 
-# loga
 
 
+# HOSTS
+
+sudo nano /etc/hosts
+
+127.0.0.1   mongo1
+127.0.0.1   mongo2  
+127.0.0.1   mongo3
+
+
+# rodar
+rs.initiate({
+            _id: "rs0",
+            members: [
+                { _id: 0, host: "mongo1:27017" },
+                { _id: 1, host: "mongo2:27017" },
+                { _id: 2, host: "mongo3:27017" }
+            ]
+        })
+
+# logs
 # Verifique os logs do mongo1 para ver se o script rodou
 docker-compose logs mongo1 | grep -i "replicaset\|initiate\|inicializando"
 
