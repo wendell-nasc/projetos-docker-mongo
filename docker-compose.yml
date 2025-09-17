@@ -1,0 +1,76 @@
+version: '3.9'
+
+services:
+  mongo1:
+    build: ./mongo
+    container_name: mongo1
+    ports:
+      - "${MONGO_PORT1}:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+      - MONGO_REPLICA_SET=${MONGO_REPLICA_SET}
+      - MONGO_NODES=${MONGO_NODES}
+    volumes:
+      - ./data/mongo1:/data/db
+      - ./mongo/mongod.conf:/etc/mongo/mongod.conf
+      # - ./mongo/keyfile:/etc/mongo/keyfile
+    networks:
+      - mongo-cluster1
+
+  mongo2:
+    build: ./mongo
+    container_name: mongo2
+    ports:
+      - "${MONGO_PORT2}:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+      - MONGO_REPLICA_SET=${MONGO_REPLICA_SET}
+      - MONGO_NODES=${MONGO_NODES}
+    volumes:
+      - ./data/mongo2:/data/db
+      - ./mongo/mongod.conf:/etc/mongo/mongod.conf
+      # - ./mongo/keyfile:/etc/mongo/keyfile
+      
+    networks:
+      - mongo-cluster1
+
+  mongo3:
+    build: ./mongo
+    container_name: mongo3
+    ports:
+      - "${MONGO_PORT3}:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+      - MONGO_REPLICA_SET=${MONGO_REPLICA_SET}
+      - MONGO_NODES=${MONGO_NODES}
+    volumes:
+      - ./data/mongo3:/data/db
+      - ./mongo/mongod.conf:/etc/mongo/mongod.conf
+      # - ./mongo/keyfile:/etc/mongo/keyfile
+    networks:
+      - mongo-cluster1
+
+  mongo-init:
+    image: mongo:6.0
+    container_name: mongo-init
+    depends_on:
+      - mongo1
+      - mongo2
+      - mongo3
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+      - MONGO_REPLICA_SET=${MONGO_REPLICA_SET}
+      - MONGO_NODES=${MONGO_NODES}
+
+    networks:
+      - mongo-cluster1
+    # restart: on-failure
+    restart: "no"
+
+networks:
+  mongo-cluster1:
+    driver: bridge
