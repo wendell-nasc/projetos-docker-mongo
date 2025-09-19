@@ -11,7 +11,7 @@ COPY init-replica.js /docker-entrypoint-initdb.d/
 COPY custom-entrypoint.sh /usr/local/bin/custom-entrypoint.sh
 RUN chmod 755 /usr/local/bin/custom-entrypoint.sh
 
-EXPOSE 27017
+# EXPOSE 27017
 
 # EntryPoint
 ENTRYPOINT ["/usr/local/bin/custom-entrypoint.sh"]

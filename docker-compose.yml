@@ -10,7 +10,7 @@ services:
       - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
       - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
       - MONGO_REPLICA_SET=${MONGO_REPLICA_SET}
-      # - MONGO_NODES=${MONGO_NODES}
+      - MONGO_NODES=${MONGO_NODES}
     volumes:
       - ./data/mongo1:/data/db
       - ./mongo/mongod.conf:/etc/mongo/mongod.conf
@@ -21,12 +21,12 @@ services:
     build: ./mongo
     container_name: mongo2
     ports:
-      - "${MONGO_PORT2}:27017"
+      - "${MONGO_PORT2}:27018"
     environment:
       - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
       - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
       - MONGO_REPLICA_SET=${MONGO_REPLICA_SET}
-      # - MONGO_NODES=${MONGO_NODES}
+      - MONGO_NODES=${MONGO_NODES}
     volumes:
       - ./data/mongo2:/data/db
       - ./mongo/mongod.conf:/etc/mongo/mongod.conf
@@ -37,12 +37,12 @@ services:
     build: ./mongo
     container_name: mongo3
     ports:
-      - "${MONGO_PORT3}:27017"
+      - "${MONGO_PORT3}:27019"
     environment:
       - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
       - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
       - MONGO_REPLICA_SET=${MONGO_REPLICA_SET}
-      # - MONGO_NODES=${MONGO_NODES}
+      - MONGO_NODES=${MONGO_NODES}
     volumes:
       - ./data/mongo3:/data/db
       - ./mongo/mongod.conf:/etc/mongo/mongod.conf
@@ -60,7 +60,7 @@ services:
       - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
       - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
       - MONGO_REPLICA_SET=${MONGO_REPLICA_SET}
-      # - MONGO_NODES=${MONGO_NODES}
+      - MONGO_NODES=${MONGO_NODES}
     env_file:
       - .env
     entrypoint: >
@@ -70,19 +70,17 @@ services:
         rs.initiate({
           _id: 'rs0',
           members: [
-            { _id: 0, host: 'mongo1:27017' },
-            { _id: 1, host: 'mongo2:27017' },
-            { _id: 2, host: 'mongo3:27017' }
+            { _id: 0, host: 'mongo1:27017', priority: 2 },  # prioridade maior → PRIMARY
+            { _id: 1, host: 'mongo2:27018', priority: 1 },
+            { _id: 2, host: 'mongo3:27019', priority: 1 }
           ]
         })
         EOF
       "
-      
-
     networks:
       - mongo-cluster1
-    # restart: on-failure
-    restart: "no"
+    restart: on-failure
+    #restart: "no"
 
 networks:
   mongo-cluster1:

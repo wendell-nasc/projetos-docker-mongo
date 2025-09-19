@@ -25,6 +25,15 @@ rs.initiate({
             ]
         })
 
+rs.reconfig({
+  _id: "rs0",
+  members: [
+    { _id: 0, host: "mongo1:27017" },
+    { _id: 1, host: "mongo2:27017" },
+    { _id: 2, host: "mongo3:27017" }
+  ]
+}, { force: true })
+
 # logs
 # Verifique os logs do mongo1 para ver se o script rodou
 docker-compose logs mongo1 | grep -i "replicaset\|initiate\|inicializando"
