@@ -82,7 +82,8 @@ services:
     #   "
     networks:
       - mongo-cluster
-    restart: on-failure
+    restart: always
+    #restart: on-failure
     #restart: "no"
 
 networks:

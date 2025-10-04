@@ -14,6 +14,19 @@
 		},
 		{
 			"path": "../../ONLI 2025"
+		},
+		{
+			"path": "../../PROJETO"
+		},
+		{
+			"path": "../../projetos_cripto"
+		},
+		{
+			"path": "../../projetos-full-stack/meu-blog-fulltstack"
 		}
-	]
+	],
+	"settings": {
+		"jupyter.interactiveWindow.cellMarker.codeRegex": "^# COMMAND ----------|^# Databricks notebook source|^(#\\s*%%|#\\s*\\<codecell\\>|#\\s*In\\[\\d*?\\]|#\\s*In\\[ \\])",
+		"jupyter.interactiveWindow.cellMarker.default": "# COMMAND ----------"
+	}
 }
