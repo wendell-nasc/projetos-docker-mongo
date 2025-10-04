@@ -16,7 +16,7 @@ services:
       - ./data/mongo1:/data/db
       - ./mongo/mongod.conf:/etc/mongo/mongod.conf
     networks:
-      - comum-network
+      - mongo-cluster
 
   mongo2:
     build: ./mongo
@@ -33,7 +33,7 @@ services:
       - ./data/mongo2:/data/db
       - ./mongo/mongod.conf:/etc/mongo/mongod.conf
     networks:
-      - comum-network
+      - mongo-cluster
 
   mongo3:
     build: ./mongo
@@ -50,7 +50,7 @@ services:
       - ./data/mongo3:/data/db
       - ./mongo/mongod.conf:/etc/mongo/mongod.conf
     networks:
-      - comum-network
+      - mongo-cluster
 
   mongo-init:
     image: mongo:6.0
@@ -81,12 +81,11 @@ services:
     #     EOF
     #   "
     networks:
-      - comum-network
+      - mongo-cluster
     restart: always
     #restart: on-failure
     #restart: "no"
 
 networks:
-  comum-network:
+  mongo-cluster:
     driver: bridge
-    name: comum
