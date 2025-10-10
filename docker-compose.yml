@@ -17,6 +17,7 @@ services:
       - ./mongo/mongod.conf:/etc/mongo/mongod.conf
     networks:
       - comum-network
+    restart: always
 
   mongo2:
     build: ./mongo
@@ -34,6 +35,7 @@ services:
       - ./mongo/mongod.conf:/etc/mongo/mongod.conf
     networks:
       - comum-network
+    restart: always
 
   mongo3:
     build: ./mongo
@@ -51,6 +53,7 @@ services:
       - ./mongo/mongod.conf:/etc/mongo/mongod.conf
     networks:
       - comum-network
+    restart: always
 
   mongo-init:
     image: mongo:6.0
